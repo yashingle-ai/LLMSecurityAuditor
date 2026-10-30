@@ -1,0 +1,27 @@
+# Deployment settings, loaded by agent.py and main.py.
+agent:
+  max_steps: 8
+  require_approval: [delete_account, send_email]  # need the customer's confirmation first
+
+llm:                     # used when LLM_BACKEND=real and the environment doesn't say
+  base_url: https://llm-gateway.acme.example/v1
+  model: acme-support-2026-09-15
+  max_tokens: 1024
+
+rate_limit:
+  requests_per_minute: 30  # per customer
+
+guardrails:
+  injection_filter:
+    apply_to: [user_input, tool_results, model_output]
+    mode: block
+
+audit_log:
+  enabled: true
+  logger: acme.audit     # shipped to the security team's log store
+
+credentials:             # used by the billing integration
+  billing_api:
+    token_env: ACME_BILLING_KEY
+    scope: invoices:read
+    ttl_hours: 1

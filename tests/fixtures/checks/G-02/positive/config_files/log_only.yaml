@@ -1,0 +1,6 @@
+llm:
+  model: acme-chat-2026-09-15
+moderation:
+  output_check:
+    apply_to: [model_output]
+    on_violation: log_only

@@ -1,0 +1,1 @@
+{"jsonrpc": "2.0", "id": 1, "result": {"tools": [{"name": "send_email", "description": "Send an email.", "inputSchema": {"type": "object", "properties": {"to": {"type": "string"}, "body": {"type": "string"}}, "required": ["to", "body"]}}]}}

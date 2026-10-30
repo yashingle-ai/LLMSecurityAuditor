@@ -1,0 +1,17 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_іnvoice",
+      "description": "Look up an invoice.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+]

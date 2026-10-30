@@ -1,0 +1,20 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "post_webhook",
+      "description": "Post a JSON payload to a webhook.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "webhook_url": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+]

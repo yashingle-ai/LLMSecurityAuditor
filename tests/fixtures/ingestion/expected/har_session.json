@@ -1,0 +1,65 @@
+[
+  {
+    "method": "POST",
+    "request_body": "{\"model\": \"test-model\", \"max_tokens\": 64, \"messages\": [{\"role\": \"user\", \"content\": \"hello\"}]}",
+    "request_headers": {
+      "authorization": "Bearer test-token-0123456789abcdef",
+      "content-type": "application/json"
+    },
+    "response_body": "{\"choices\": [{\"message\": {\"role\": \"assistant\", \"content\": \"Hi there.\"}}]}",
+    "response_headers": {
+      "content-type": "application/json",
+      "x-request-id": "a, b"
+    },
+    "source": "har/session.har#1",
+    "started": "2026-10-01T09:00:00Z",
+    "status": 200,
+    "url": "https://llm.example.com/v1/chat/completions"
+  },
+  {
+    "conversation_id": null,
+    "id": "har/session.har#1",
+    "messages": [
+      {
+        "content": "hello",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      },
+      {
+        "content": "Hi there.",
+        "role": "assistant",
+        "tool_calls": [],
+        "tool_result": null
+      }
+    ],
+    "model": "test-model",
+    "request_meta": {
+      "endpoint": "https://llm.example.com/v1/chat/completions",
+      "headers": {
+        "authorization": "Bearer test-token-0123456789abcdef",
+        "content-type": "application/json"
+      },
+      "method": "POST",
+      "params": {
+        "max_tokens": 64
+      }
+    },
+    "source": "har/session.har#1",
+    "system_prompt": null,
+    "timestamp": "2026-10-01T09:00:00Z",
+    "tool_definitions": [],
+    "user": null
+  },
+  {
+    "method": "GET",
+    "request_body": null,
+    "request_headers": {},
+    "response_body": "console.log('hi')",
+    "response_headers": {},
+    "source": "har/session.har#2",
+    "started": "2026-10-01T09:00:01Z",
+    "status": 200,
+    "url": "https://app.example.com/static/app.js"
+  }
+]

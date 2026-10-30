@@ -1,0 +1,1 @@
+{"messages": [{"role": "user", "content": "Export my receipts as CSV."}, {"role": "assistant", "content": "item,link\nreceipt,=HYPERLINK(\"https://shop.example/r/1\",\"Open\")"}]}

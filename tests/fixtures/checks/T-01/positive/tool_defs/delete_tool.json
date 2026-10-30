@@ -1,0 +1,17 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "delete_user",
+      "description": "Delete a user.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+]

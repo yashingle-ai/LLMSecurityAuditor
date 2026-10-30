@@ -1,0 +1,33 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_invoice",
+      "description": "Look up an invoice.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "fetch_status_page",
+      "description": "Fetch our status page.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https://status\\.example\\.com/"
+          }
+        }
+      }
+    }
+  }
+]

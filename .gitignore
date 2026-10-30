@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Auditor runtime state and output
+.llmaudit/
+reports/
+
+# Traces from manually running the demo apps (generated fixtures are traffic.jsonl)
+demo/*/logs/live.jsonl
+
+# Large or sensitive datasets
+datasets/raw/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store

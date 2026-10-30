@@ -1,0 +1,2 @@
+Answer the customer's question: {question}
+Be brief.

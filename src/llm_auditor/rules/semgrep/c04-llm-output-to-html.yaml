@@ -1,0 +1,47 @@
+rules:
+  - id: llmaudit-c04-llm-output-to-html
+    metadata: {check: C-04}
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Model output is rendered as raw HTML. Injected markup can run scripts in the user's
+      browser or load images that leak data. Escape or sanitize it first.
+    mode: taint
+    pattern-sources:
+      - pattern: $CLIENT.chat.completions.create(...)
+      - pattern: $CLIENT.completions.create(...)
+      - pattern: $CLIENT.responses.create(...)
+      - pattern: $CLIENT.messages.create(...)
+      - pattern: $MODEL.generate_content(...)
+      - patterns:
+          - pattern-either:
+              - pattern: $OBJ.$METHOD(...)
+              - pattern: $METHOD(...)
+          - metavariable-regex:
+              metavariable: $METHOD
+              regex: ^(a?invoke|a?complete|a?generate|predict|run_agent|ask_llm|call_llm|chat_completion)$
+      # The arguments a model chose for a tool call are model output too.
+      - pattern: $CALL.function.arguments
+      - patterns:
+          - pattern-inside: |
+              def $HANDLER(..., $ARGS, ...):
+                ...
+          - metavariable-regex:
+              metavariable: $ARGS
+              regex: ^(arguments|tool_args|tool_input|tool_arguments)$
+          - pattern: $ARGS
+    pattern-sinks:
+      - pattern: fastapi.responses.HTMLResponse(...)
+      - pattern: starlette.responses.HTMLResponse(...)
+      - pattern: markupsafe.Markup(...)
+      - pattern: flask.render_template_string(...)
+      - pattern: django.utils.safestring.mark_safe(...)
+      - pattern: markdown.markdown(...)
+      - pattern: markdown2.markdown(...)
+      - pattern: mistune.html(...)
+      - pattern: streamlit.markdown(..., unsafe_allow_html=True, ...)
+    pattern-sanitizers:
+      - pattern: html.escape(...)
+      - pattern: markupsafe.escape(...)
+      - pattern: bleach.clean(...)
+      - pattern: nh3.clean(...)

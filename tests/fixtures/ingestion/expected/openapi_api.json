@@ -1,0 +1,47 @@
+[
+  {
+    "openapi_version": "3.0.3",
+    "operations": [
+      {
+        "method": "POST",
+        "operation_id": "chat",
+        "path": "/chat",
+        "security": null
+      },
+      {
+        "method": "GET",
+        "operation_id": "health",
+        "path": "/health",
+        "security": []
+      },
+      {
+        "method": "POST",
+        "operation_id": null,
+        "path": "/admin/reset",
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    ],
+    "path": "openapi/api.yaml",
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "security_schemes": {
+      "bearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    },
+    "servers": [
+      "https://api.example.com"
+    ],
+    "title": "Support Agent API"
+  }
+]

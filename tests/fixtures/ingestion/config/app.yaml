@@ -1,0 +1,6 @@
+llm:
+  provider: openai
+  model: latest
+  max_tokens: null
+logging:
+  level: debug

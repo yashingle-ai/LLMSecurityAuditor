@@ -1,0 +1,75 @@
+[
+  {
+    "conversation_id": "conv_1",
+    "id": "run_1",
+    "messages": [
+      {
+        "content": "Status of INV-1002?",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      },
+      {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "arguments": {
+              "invoice_id": "INV-1002"
+            },
+            "id": "call_1",
+            "name": "get_invoice"
+          }
+        ],
+        "tool_result": null
+      },
+      {
+        "content": "",
+        "role": "tool",
+        "tool_calls": [],
+        "tool_result": {
+          "call_id": "call_1",
+          "content": "Invoice INV-1002: 89.50 USD, due.",
+          "is_error": false
+        }
+      },
+      {
+        "content": "Invoice INV-1002 is due.",
+        "role": "assistant",
+        "tool_calls": [],
+        "tool_result": null
+      }
+    ],
+    "model": "test-model",
+    "request_meta": {
+      "endpoint": null,
+      "headers": {},
+      "method": null,
+      "params": {
+        "max_tokens": 256
+      }
+    },
+    "source": "traces/anthropic.jsonl:1",
+    "system_prompt": "You are a support bot.",
+    "timestamp": "2026-10-01T09:00:00Z",
+    "tool_definitions": [
+      {
+        "description": "Look up an invoice.",
+        "name": "get_invoice",
+        "parameters": {
+          "properties": {
+            "invoice_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "invoice_id"
+          ],
+          "type": "object"
+        },
+        "source": null
+      }
+    ],
+    "user": "alice"
+  }
+]

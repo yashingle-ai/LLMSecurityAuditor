@@ -1,0 +1,6 @@
+llm:
+  model: acme-chat-2026-09-15
+guardrails:
+  injection_filter:
+    apply_to: [user_input, tool_results]
+    mode: monitor

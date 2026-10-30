@@ -1,0 +1,7 @@
+{
+  "name": "support-bot",
+  "dependencies": {
+    "express": "4.21.0",
+    "zod": "3.23.8"
+  }
+}

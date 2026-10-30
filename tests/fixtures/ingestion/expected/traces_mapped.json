@@ -1,0 +1,46 @@
+[
+  {
+    "conversation_id": null,
+    "id": "r1",
+    "messages": [
+      {
+        "content": "What is my balance?",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      },
+      {
+        "content": "$12.00",
+        "role": "assistant",
+        "tool_calls": [],
+        "tool_result": null
+      }
+    ],
+    "model": "small-model",
+    "request_meta": null,
+    "source": "traces/mapped.jsonl:1",
+    "system_prompt": "Be brief.",
+    "timestamp": "2025-10-01T09:00:00Z",
+    "tool_definitions": [],
+    "user": null
+  },
+  {
+    "conversation_id": null,
+    "id": "r2",
+    "messages": [
+      {
+        "content": "Thanks!",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      }
+    ],
+    "model": null,
+    "request_meta": null,
+    "source": "traces/mapped.jsonl:2",
+    "system_prompt": null,
+    "timestamp": null,
+    "tool_definitions": [],
+    "user": null
+  }
+]

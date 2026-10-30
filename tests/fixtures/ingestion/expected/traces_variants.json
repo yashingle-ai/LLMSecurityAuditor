@@ -1,0 +1,125 @@
+[
+  {
+    "conversation_id": null,
+    "id": "traces/variants.jsonl:1",
+    "messages": [
+      {
+        "content": "Describe this image.",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      },
+      {
+        "content": "A cat on a sofa.",
+        "role": "assistant",
+        "tool_calls": [],
+        "tool_result": null
+      }
+    ],
+    "model": "test-model",
+    "request_meta": {
+      "endpoint": null,
+      "headers": {},
+      "method": null,
+      "params": {
+        "max_tokens": 50,
+        "temperature": 0.2
+      }
+    },
+    "source": "traces/variants.jsonl:1",
+    "system_prompt": "Answer briefly.",
+    "timestamp": null,
+    "tool_definitions": [],
+    "user": null
+  },
+  {
+    "conversation_id": null,
+    "id": "run_2",
+    "messages": [
+      {
+        "content": "Run the report.",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      },
+      {
+        "content": "Running it.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "tu_1",
+            "name": "run_report"
+          }
+        ],
+        "tool_result": null
+      },
+      {
+        "content": "",
+        "role": "tool",
+        "tool_calls": [],
+        "tool_result": {
+          "call_id": "tu_1",
+          "content": "permission denied",
+          "is_error": true
+        }
+      },
+      {
+        "content": "Why did that fail?",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      }
+    ],
+    "model": null,
+    "request_meta": null,
+    "source": "traces/variants.jsonl:2",
+    "system_prompt": null,
+    "timestamp": "2025-10-01T09:00:00Z",
+    "tool_definitions": [],
+    "user": null
+  },
+  {
+    "conversation_id": null,
+    "id": "traces/variants.jsonl:3",
+    "messages": [
+      {
+        "content": "Search for it.",
+        "role": "user",
+        "tool_calls": [],
+        "tool_result": null
+      },
+      {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "arguments": {
+              "_raw": "{not json"
+            },
+            "id": "c1",
+            "name": "search"
+          }
+        ],
+        "tool_result": null
+      },
+      {
+        "content": "",
+        "role": "tool",
+        "tool_calls": [],
+        "tool_result": {
+          "call_id": "c1",
+          "content": "no results",
+          "is_error": false
+        }
+      }
+    ],
+    "model": null,
+    "request_meta": null,
+    "source": "traces/variants.jsonl:3",
+    "system_prompt": null,
+    "timestamp": null,
+    "tool_definitions": [],
+    "user": null
+  }
+]

@@ -1,0 +1,7 @@
+agent:
+  model: acme-chat-2026-09-15
+credentials:
+  billing_api:
+    token_env: BILLING_KEY
+    scope: invoices:read
+    ttl_hours: 1

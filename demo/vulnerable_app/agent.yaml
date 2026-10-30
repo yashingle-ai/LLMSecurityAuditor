@@ -1,0 +1,23 @@
+# Deployment settings, loaded by agent.py and main.py.
+agent:
+  max_steps: null        # no limit: the loop runs until the model stops calling tools
+  require_approval: []   # tools that need the customer's confirmation before they run
+
+llm:                     # used when LLM_BACKEND=real and the environment doesn't say
+  base_url: http://llm-gateway.acme.example/v1
+  model: latest
+  max_tokens: null
+
+guardrails:
+  injection_filter:
+    apply_to: [user_input]
+    mode: monitor        # log, don't block, while we tune it
+
+audit_log:
+  enabled: false         # tool calls only reach the trace log, in development
+
+credentials:             # used by the billing integration
+  billing_api:
+    token_env: ACME_BILLING_KEY
+    scope: admin
+    expires: never

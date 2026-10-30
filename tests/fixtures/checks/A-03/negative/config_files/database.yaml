@@ -1,0 +1,4 @@
+# Not an LLM config, so token and rate limits don't apply.
+postgres:
+  host: db.internal
+  pool_size: 10

@@ -1,0 +1,65 @@
+# Audit scope for the demo hardened app: the vulnerable app with every flaw fixed.
+
+name: demo-hardened-app
+
+# Base directory for the input paths below, relative to this file.
+root: ..
+
+# How much of the target the auditor can see: black | gray | white
+access: white
+
+# What the target can do and how exposed it is. This drives severity,
+# so every field is required.
+capability_profile:
+  exposure: internet            # internet | internal
+  autonomy: autonomous          # human_in_loop | autonomous
+  data_sensitivity: high        # low | medium | high
+  multi_tenant: true
+  capabilities:                 # what the agent's tools let it do
+    - reads_private_data
+    - ingests_untrusted_content
+    - external_communication
+    - code_execution
+    - destructive
+    - writes_memory
+
+# Live endpoint for active probing (Stage 10). Omit for static-only audits.
+target:
+  adapter: http_chat            # http_chat | openai_compatible | scripted
+  base_url: http://localhost:8002
+  allow_list: ["localhost:8002"]
+
+# Files, directories, or glob patterns to audit, relative to root.
+inputs:
+  source_dirs: [demo/hardened_app]
+  prompt_dirs: [demo/hardened_app/prompts]
+  logs: ["demo/hardened_app/logs/*.jsonl"]   # or {path, format, mapping}; see LogInput
+  tool_defs:
+    - demo/hardened_app/tools.json
+    - demo/hardened_app/mcp_tools.json        # captured from its MCP servers' tools/list
+  mcp_configs: [demo/hardened_app/mcp.json]
+  config_files:
+    - demo/hardened_app/agent.yaml
+    - demo/hardened_app/sandbox/docker-compose.yaml
+  openapi: [demo/hardened_app/openapi.json]
+  dependency_files: [demo/hardened_app/requirements.txt]
+  model_dirs: [demo/hardened_app/models]
+  documents: [demo/hardened_app/knowledge_base]
+
+# Tool definitions approved with `llmaudit tools lock` (check T-12 diffs against them).
+tool_lock: demo/hardened_app/tools.lock.json
+
+# Answers to questions code can't show. A check missing an answer is skipped, not passed.
+attestations:
+  provider_retention_days: 0        # how long the LLM provider keeps prompts and outputs
+  provider_trains_on_data: false    # may the provider train on them?
+  api_keys_scoped: true             # are keys restricted to this application?
+  api_key_rotation_days: 30         # how often keys are rotated
+  spend_limit: true                 # is there a hard spend limit at the provider?
+  # T-15 reads these when the agent's credentials aren't described in a config file:
+  # agent_credentials_least_privilege: true   # do they allow only what the tools need?
+  # agent_credential_max_age_days: 1          # the longest any of them stays valid
+
+# Known-vulnerability snapshot for SC-02. Without this, the bundled snapshot is used.
+# Refresh with: uv run llmaudit advisories update --out .llmaudit/advisories.json
+# advisory_db: .llmaudit/advisories.json

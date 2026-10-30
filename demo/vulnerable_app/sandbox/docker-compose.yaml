@@ -1,0 +1,12 @@
+# The code sandbox the run_python tool sends code to. (The runner image itself
+# isn't part of the demo; this file is what an auditor reviews.)
+services:
+  python-sandbox:
+    image: python:3.12-slim
+    command: ["python", "-m", "sandbox_runner"]
+    volumes:
+      - /:/host:rw            # handy for debugging
+    environment:
+      ACME_BILLING_KEY: ${ACME_BILLING_KEY}
+    ports:
+      - "8080:8080"

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/me/docs"],
+      "env": {"LOG_LEVEL": "info"}
+    },
+    "remote-search": {
+      "type": "sse",
+      "url": "https://mcp.example.com/sse",
+      "headers": {"Authorization": "Bearer test-token-0123456789abcdef"}
+    },
+    "broken": {"description": "neither a command nor a url"}
+  }
+}

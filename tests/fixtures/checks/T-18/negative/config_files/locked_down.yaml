@@ -1,0 +1,6 @@
+services:
+  sandbox:
+    image: python:3.12-slim
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]

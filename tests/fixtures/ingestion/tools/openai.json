@@ -1,0 +1,5 @@
+[
+  {"type": "function", "function": {"name": "send_email", "description": "Send an email.", "parameters": {"type": "object", "properties": {"to": {"type": "string"}, "body": {"type": "string"}}, "required": ["to", "body"]}}},
+  "not a tool",
+  {"type": "function", "function": {"description": "no name"}}
+]

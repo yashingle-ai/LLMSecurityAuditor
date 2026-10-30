@@ -1,0 +1,6 @@
+agent:
+  model: acme-chat-2026-09-15
+  tools: [get_invoice, send_email]
+audit_log:
+  enabled: true
+  sink: s3://acme-audit/agent/

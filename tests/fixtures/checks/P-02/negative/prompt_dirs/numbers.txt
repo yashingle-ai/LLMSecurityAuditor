@@ -1,0 +1,2 @@
+Invoice INV-1002 is 89.50 USD, due 2026-10-01.
+Order 4111 1111 1111 1112 failed the Luhn check.

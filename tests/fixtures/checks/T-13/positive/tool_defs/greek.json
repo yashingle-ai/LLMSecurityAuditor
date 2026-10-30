@@ -1,0 +1,17 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "lοg_event",
+      "description": "Record an event.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+]

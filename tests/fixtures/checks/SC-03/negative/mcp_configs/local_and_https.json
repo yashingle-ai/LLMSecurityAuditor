@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "files": {
+      "command": "node",
+      "args": [
+        "/opt/mcp/server-filesystem/dist/index.js",
+        "/srv/data"
+      ]
+    },
+    "search": {
+      "url": "https://mcp.search.example.com/sse"
+    },
+    "dev": {
+      "url": "http://localhost:8931/sse"
+    }
+  }
+}

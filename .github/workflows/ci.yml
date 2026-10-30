@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+      - run: uv sync --locked
+      # Semgrep runs the C-checks. It's an isolated tool: its pinned dependencies clash with ours.
+      - run: uv tool install semgrep==1.182.1
+      - run: echo "$(uv tool dir --bin)" >> "$GITHUB_PATH"
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run mypy
+      - run: uv run pytest
+        env:
+          REQUIRE_SEMGREP: "1"  # a missing Semgrep fails the build instead of skipping checks

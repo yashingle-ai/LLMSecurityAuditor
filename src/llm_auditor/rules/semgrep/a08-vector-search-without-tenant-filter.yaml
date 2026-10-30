@@ -1,0 +1,22 @@
+rules:
+  - id: llmaudit-a08-vector-search-without-tenant-filter
+    metadata: {check: A-08}
+    languages: [python]
+    severity: WARNING
+    message: >-
+      A vector search runs with no filter, namespace, or tenant restriction. In a
+      multi-tenant app, one customer's question can retrieve another customer's documents.
+    patterns:
+      - pattern-either:
+          - pattern: $STORE.similarity_search(...)
+          - pattern: $STORE.similarity_search_with_score(...)
+          - pattern: $STORE.max_marginal_relevance_search(...)
+          - pattern: $COLLECTION.query(..., query_texts=$QUERY, ...)
+          - pattern: $COLLECTION.query(..., query_embeddings=$QUERY, ...)
+          - pattern: $INDEX.query(..., vector=$QUERY, ...)
+          - pattern: $CLIENT.search(..., collection_name=$NAME, ...)
+      - pattern-not: $X.$METHOD(..., filter=$F, ...)
+      - pattern-not: $X.$METHOD(..., where=$F, ...)
+      - pattern-not: $X.$METHOD(..., namespace=$F, ...)
+      - pattern-not: $X.$METHOD(..., query_filter=$F, ...)
+      - pattern-not: $X.$METHOD(..., tenant=$F, ...)

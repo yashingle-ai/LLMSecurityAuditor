@@ -1,0 +1,1 @@
+{"messages": [{"role": "user", "content": "Where do I put the billing key?"}, {"role": "assistant", "content": "Set it in the BILLING_API_KEY environment variable."}]}

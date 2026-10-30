@@ -1,0 +1,7 @@
+agent:
+  model: acme-chat-2026-09-15
+credentials:
+  crm:
+    token_env: CRM_TOKEN
+    scopes: [contacts:read]
+    expires: never

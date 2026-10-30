@@ -1,0 +1,31 @@
+rules:
+  - id: llmaudit-c06-tool-without-authorization
+    metadata: {check: C-06}
+    languages: [python]
+    severity: ERROR
+    message: >-
+      This tool handler looks up a resource by an ID the model chose, but never checks it
+      against the user it runs for. Anyone can ask the agent for anyone else's data.
+    patterns:
+      - pattern-inside: |
+          def $HANDLER($USER, $ARGS, ...):
+            ...
+      - metavariable-regex:
+          metavariable: $USER
+          regex: ^(user|user_id|current_user|requester|caller|principal)$
+      - metavariable-regex:
+          metavariable: $ARGS
+          regex: ^(arguments|tool_args|tool_input|tool_arguments)$
+      - pattern-either:
+          - pattern: $STORE.get(<... $ARGS.get($KEY, ...) ...>, ...)
+          - pattern: $STORE.get(<... $ARGS[$KEY] ...>, ...)
+          - pattern: $STORE[<... $ARGS.get($KEY, ...) ...>]
+          - pattern: $STORE[<... $ARGS[$KEY] ...>]
+      - metavariable-regex:
+          metavariable: $KEY
+          regex: (?i)^["']\w*id["']$
+      - pattern-not-inside: |
+          def $HANDLER($USER, $ARGS, ...):
+            ...
+            <... $USER ...>
+            ...

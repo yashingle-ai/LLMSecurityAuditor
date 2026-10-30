@@ -1,0 +1,2 @@
+agent:
+  model_name: llama3:latest

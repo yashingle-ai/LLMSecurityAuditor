@@ -1,0 +1,52 @@
+rules:
+  - id: llmaudit-c01-user-input-in-system-prompt
+    metadata: {check: C-01}
+    languages: [python]
+    severity: WARNING
+    message: >-
+      User-controlled input is put into the system prompt, where the model treats it as
+      the developer's instructions. Pass user input as a user message instead.
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern-inside: |
+              @$APP.$VERB(...)
+              def $ROUTE(..., $PARAM, ...):
+                ...
+          - metavariable-regex:
+              metavariable: $VERB
+              regex: ^(get|post|put|patch|delete|route|websocket|api_route)$
+          - pattern: $PARAM
+      - pattern: flask.request.$ATTR
+      - pattern: input(...)
+      - patterns:
+          - pattern-inside: |
+              def $FUNC(..., $PARAM, ...):
+                ...
+          - metavariable-regex:
+              metavariable: $PARAM
+              regex: ^(user_input|user_message|user_query|question|query)$
+          - pattern: $PARAM
+    pattern-sinks:
+      - patterns:
+          - pattern: '{..., "role": "system", ..., "content": $CONTENT, ...}'
+          - focus-metavariable: $CONTENT
+      - patterns:
+          - pattern: '{..., "role": "developer", ..., "content": $CONTENT, ...}'
+          - focus-metavariable: $CONTENT
+      - patterns:
+          - pattern: $CLIENT.messages.create(..., system=$CONTENT, ...)
+          - focus-metavariable: $CONTENT
+      - patterns:
+          - pattern-either:
+              - pattern: SystemMessage($CONTENT, ...)
+              - pattern: SystemMessage(..., content=$CONTENT, ...)
+              - pattern: $MESSAGE("system", $CONTENT, ...)
+              - pattern: $MESSAGE(..., role="system", ..., content=$CONTENT, ...)
+          - focus-metavariable: $CONTENT
+      - patterns:
+          - pattern: $NAME = $CONTENT
+          - metavariable-regex:
+              metavariable: $NAME
+              regex: (?i)^(system_?prompt|system_?message|system_?instructions?)$
+          - focus-metavariable: $CONTENT

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM Security Auditor · Demo</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#audit">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z" />
+          <path class="tick" d="m8.5 12 2.5 2.5 4.5-5" />
+        </svg>
+        <span><strong>LLM Security Auditor</strong><small>Live demo</small></span>
+      </a>
+      <nav class="tabs" aria-label="Sections">
+        <a href="#audit" data-tab="audit">Audit the demo apps</a>
+        <a href="#try" data-tab="try">Try the detectors</a>
+        <a href="#catalog" data-tab="catalog">Check catalog</a>
+        <a href="#how" data-tab="how">How it works</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Audit -->
+    <section id="view-audit" class="view" aria-labelledby="audit-title">
+      <div class="hero">
+        <h1 id="audit-title">Find the security flaws in an AI agent before an attacker does</h1>
+        <p>
+          The auditor reads an LLM app's prompts, code, tool definitions, configuration,
+          documents and conversation logs, and reports what an attacker could exploit, with
+          the evidence and the fix. Run it on two versions of the same customer-support agent:
+          one with flaws planted on purpose, and one with every flaw fixed.
+        </p>
+      </div>
+      <div id="app-cards" class="app-cards"></div>
+      <div id="results" aria-live="polite"></div>
+    </section>
+
+    <!-- Try the detectors -->
+    <section id="view-try" class="view" aria-labelledby="try-title" hidden>
+      <div class="hero">
+        <h1 id="try-title">Try the detectors on your own text</h1>
+        <p>
+          Paste a chat message, web page, email or document. The auditor looks for prompt
+          injection, for text hidden from human readers, and for personal data and secrets.
+          It runs these same detectors on every log and document it audits.
+        </p>
+      </div>
+      <div class="panel">
+        <p class="label">Start from an example</p>
+        <div id="examples" class="chips"></div>
+        <form id="inspect-form" class="inspect-form">
+          <label for="inspect-text" class="label">Text to inspect</label>
+          <textarea id="inspect-text" rows="8" maxlength="20000" required spellcheck="false"></textarea>
+          <div class="form-row">
+            <fieldset>
+              <legend class="label">Where does it come from?</legend>
+              <label class="radio"><input type="radio" name="channel" value="user"> A user typed it</label>
+              <label class="radio"><input type="radio" name="channel" value="content" checked> The app read it (web page, email, document, tool result)</label>
+            </fieldset>
+            <label class="select-label">
+              <span class="label">Format</span>
+              <select id="inspect-format">
+                <option value="text">Text or HTML</option>
+                <option value="markdown">Markdown</option>
+              </select>
+            </label>
+            <button type="submit" class="button primary">Inspect</button>
+          </div>
+        </form>
+      </div>
+      <div id="inspect-results" aria-live="polite"></div>
+    </section>
+
+    <!-- Catalog -->
+    <section id="view-catalog" class="view" aria-labelledby="catalog-title" hidden>
+      <div class="hero">
+        <h1 id="catalog-title">Every check the auditor runs</h1>
+        <p>
+          Each check has an ID: the letter says what part of the app it looks at. Each one maps
+          to the OWASP Top 10 for LLM Applications (LLM01–LLM10) and the OWASP Top 10 for
+          Agentic Applications (ASI01–ASI10).
+        </p>
+      </div>
+      <div class="toolbar">
+        <input id="catalog-search" type="search" placeholder="Search checks, e.g. injection or LLM07" aria-label="Search checks">
+      </div>
+      <div id="catalog"></div>
+    </section>
+
+    <!-- How it works -->
+    <section id="view-how" class="view" aria-labelledby="how-title" hidden>
+      <div class="hero">
+        <h1 id="how-title">How the auditor works</h1>
+        <p>
+          One command, one scope file. Nothing is sent to a model or to the app under test:
+          the auditor reads files and logs, and everything runs on this machine.
+        </p>
+      </div>
+
+      <ol class="pipeline">
+        <li><strong>Scope file</strong><span>Says what to audit (prompts, code, tools, configs, logs, documents) and what the app can do: who can reach it and what its tools can touch.</span></li>
+        <li><strong>Ingestion</strong><span>Loads every input into one model: prompts, tool definitions, conversations with their tool calls, documents with their hidden text.</span></li>
+        <li><strong>48 checks</strong><span>Pattern rules, Semgrep taint rules, an injection classifier, and data-flow tracking across tool calls.</span></li>
+        <li><strong>Scoring and linking</strong><span>Severity follows a fixed rubric. Evidence from the logs confirms static findings, and linked findings point to each other.</span></li>
+        <li><strong>Reports</strong><span>JSON for machines, Markdown for people, SARIF for GitHub code scanning. Secrets and personal data are redacted everywhere.</span></li>
+      </ol>
+
+      <div class="grid-2">
+        <div class="panel">
+          <h2>Four kinds of finding</h2>
+          <dl class="defs">
+            <dt><span class="badge kind-vulnerability">Vulnerability</span></dt>
+            <dd>Exploitable, with proof. Example: the logs show the model repeating a key from its system prompt.</dd>
+            <dt><span class="badge kind-weakness">Weakness</span></dt>
+            <dd>A design or configuration flaw that hasn't been exploited yet. Example: a key pasted into the system prompt.</dd>
+            <dt><span class="badge kind-hardening">Hardening</span></dt>
+            <dd>Best-practice advice. It has no severity and never fails a build.</dd>
+            <dt><span class="badge kind-incident">Incident</span></dt>
+            <dd>An attack someone tried, seen in the logs, marked <em>succeeded</em>, <em>failed</em> or <em>unknown</em>. An attack that succeeded turns the weakness it got through into a vulnerability.</dd>
+          </dl>
+        </div>
+        <div class="panel">
+          <h2>How severity is scored</h2>
+          <p class="formula">score = base impact + context + capabilities</p>
+          <ul class="plain">
+            <li><strong>Base impact</strong> (0–10): set by each check. A key in the system prompt is 7; model output reaching a shell is 9.</li>
+            <li><strong>Context</strong>: +1 each for internet-facing, autonomous, sensitive data, and multi-tenant; −1 for low-sensitivity data.</li>
+            <li><strong>Capabilities</strong>: +1 for each tool capability that makes the issue worse, such as sending email or running code, up to +2.</li>
+          </ul>
+          <p class="muted">0 info · 1–3 low · 4–6 medium · 7–8 high · 9–10 critical. Confidence is reported separately and never lowers severity, so an unconfirmed critical issue still reads as critical.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Where an LLM app can be attacked</h2>
+        <p class="muted">Every check names the trust boundary it guards.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Boundary</th><th>What crosses it</th><th>Typical attacks</th></tr></thead>
+            <tbody>
+              <tr><td><b>B1</b> User → App</td><td>User messages, uploads</td><td>Direct prompt injection, jailbreaks</td></tr>
+              <tr><td><b>B2</b> App → LLM</td><td>System prompt, templates</td><td>Secrets in prompts, unsafe templates</td></tr>
+              <tr><td><b>B3</b> Content → Context</td><td>Web pages, emails, documents, tool results</td><td>Indirect injection, hidden instructions</td></tr>
+              <tr><td><b>B4</b> LLM → Tools</td><td>Tool calls and arguments</td><td>Excessive agency, exfiltration chains</td></tr>
+              <tr><td><b>B5</b> Output → Sinks</td><td>Text rendered, run, or stored</td><td>XSS, code execution, data-leaking links</td></tr>
+              <tr><td><b>B6</b> Agent ↔ Memory</td><td>Memories written and recalled</td><td>Poisoned memories</td></tr>
+              <tr><td><b>B7</b> Agent ↔ MCP servers</td><td>Tool definitions</td><td>Tool poisoning, changed definitions, look-alike names</td></tr>
+              <tr><td><b>B8</b> App ↔ Provider</td><td>Keys, limits, logs, dependencies</td><td>Leaked keys, no cost limits, personal data in logs</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>How sure is a finding?</h2>
+        <dl class="defs">
+          <dt>Deterministic</dt><dd>A recorded fact: a canary token in a reply, a logged tool call, a value traced from one tool into another.</dd>
+          <dt>Rule</dt><dd>A pattern or Semgrep rule matched.</dd>
+          <dt>Classifier</dt><dd>The injection classifier scored the text above its threshold.</dd>
+          <dt>Attestation</dt><dd>An answer in the scope file, for facts the code can't show (such as the provider's data retention).</dd>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Local demo: nothing leaves this machine. The demo apps are deliberately vulnerable; never deploy them.
+    </div>
+  </footer>
+</body>
+</html>

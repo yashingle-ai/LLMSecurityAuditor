@@ -1,0 +1,1 @@
+Today is {today}. You are helping {agent_name} with invoice {invoice_id}.

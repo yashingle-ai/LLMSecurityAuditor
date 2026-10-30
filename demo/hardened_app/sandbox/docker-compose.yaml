@@ -1,0 +1,16 @@
+# The code sandbox the run_python tool sends code to. (The runner image itself
+# isn't part of the demo; this file is what an auditor reviews.)
+services:
+  python-sandbox:
+    image: python:3.12-slim
+    command: ["python", "-m", "sandbox_runner"]
+    networks: [sandbox]       # internal only: the app can reach it, it can't reach anything
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    user: "65534:65534"
+    mem_limit: 256m
+    pids_limit: 64
+networks:
+  sandbox:
+    internal: true

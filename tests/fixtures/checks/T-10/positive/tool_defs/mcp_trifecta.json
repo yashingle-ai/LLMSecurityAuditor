@@ -1,0 +1,24 @@
+{
+  "tools": [
+    {
+      "name": "get_emails",
+      "description": "Get the user's emails.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "fetch",
+      "description": "Fetch a URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

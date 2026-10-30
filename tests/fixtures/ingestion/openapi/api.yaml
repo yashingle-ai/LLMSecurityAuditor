@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: Support Agent API
+  version: "1.0"
+servers:
+  - url: https://api.example.com
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /chat:
+    post:
+      operationId: chat
+      responses:
+        "200": {description: OK}
+  /health:
+    get:
+      operationId: health
+      security: []
+      responses:
+        "200": {description: OK}
+  /admin/reset:
+    parameters: []
+    post:
+      security:
+        - bearerAuth: [admin]
+      responses: {}

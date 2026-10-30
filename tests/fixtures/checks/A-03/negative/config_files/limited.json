@@ -1,0 +1,9 @@
+{
+  "agent": {
+    "model": "acme-chat-2026-09-15",
+    "max_output_tokens": 800
+  },
+  "quotas": {
+    "tokens_per_day": 200000
+  }
+}

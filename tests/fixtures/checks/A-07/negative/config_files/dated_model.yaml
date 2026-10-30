@@ -1,0 +1,4 @@
+llm:
+  model: acme-chat-2026-09-15
+docs:
+  version: latest  # not a model

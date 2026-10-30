@@ -1,0 +1,28 @@
+[
+  {
+    "format": "text",
+    "path": "prompts/system.txt",
+    "text": "You are a helpful assistant.\nNever share internal notes.\n",
+    "variables": []
+  },
+  {
+    "format": "jinja",
+    "path": "prompts/support.jinja",
+    "text": "Hello {{ customer_name }}!\n{% if vip %}You are a VIP.{% endif %}\nQuestion: {{ question | trim }}\nOrder: {{ order.id }}\n",
+    "variables": [
+      "customer_name",
+      "order",
+      "question"
+    ]
+  },
+  {
+    "format": "markdown",
+    "path": "prompts/answer.md",
+    "text": "# Answer template\n\nAnswer {question} for {user!r} in {language:>10}.\nExample JSON: {\"a\": 1}\n",
+    "variables": [
+      "language",
+      "question",
+      "user"
+    ]
+  }
+]

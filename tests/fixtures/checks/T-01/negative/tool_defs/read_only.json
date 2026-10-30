@@ -1,0 +1,28 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_order",
+      "description": "Look up an order.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "list_orders",
+      "description": "List orders.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+]

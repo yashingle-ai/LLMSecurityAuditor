@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "currency-tools": {
+      "command": "uv",
+      "args": ["run", "python", "-m", "demo.malicious_mcp_server"]
+    },
+    "uploads": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/srv/acme/uploads"]
+    }
+  }
+}

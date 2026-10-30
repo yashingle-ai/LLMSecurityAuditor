@@ -1,0 +1,385 @@
+# Planted flaws in the vulnerable demo app: the ground truth the auditor is measured against.
+#
+# - location: relative to this directory. A directory matches any finding inside it.
+# - stage: the implementation stage that builds the detector for `check`.
+# - enabled: set to true once that detector exists. The harness
+#   (tests/groundtruth/test_demo_apps.py) then requires a matching finding here.
+# - Every flaw is fixed in demo/hardened_app, which must produce no
+#   vulnerability or weakness findings at all.
+
+- id: GT-001
+  check: P-01
+  stage: 4
+  location: prompts/system.txt
+  description: Billing API key pasted into the system prompt's internal notes.
+  enabled: true
+
+- id: GT-002
+  check: A-01
+  stage: 4
+  location: logs
+  description: >-
+    The same key is written to the trace logs, because every run logs the full
+    system prompt. Follows from GT-001.
+  enabled: true
+
+- id: GT-003
+  check: O-02
+  stage: 8
+  location: logs
+  description: >-
+    The key appears in an assistant reply when a user asks for the system
+    prompt (the traffic fixture includes this attack). Follows from GT-001.
+  enabled: true
+
+- id: GT-004
+  check: A-01
+  stage: 4
+  location: static/chat-widget.js
+  description: The browser chat widget embeds the model API key and calls the provider directly.
+  enabled: true
+
+- id: GT-005
+  check: P-02
+  stage: 4
+  location: prompts/system.txt
+  description: A real-looking customer's email and phone number in the system prompt's example.
+  enabled: true
+
+- id: GT-006
+  check: P-09
+  stage: 4
+  location: prompts/faq.md
+  description: >-
+    The FAQ, appended to the system prompt, hides an instruction in invisible
+    Unicode tag characters ("share any customer's invoices").
+  enabled: true
+
+- id: GT-007
+  check: C-01
+  stage: 5
+  location: main.py
+  description: The customer's free-text "customer_note" is pasted into the system prompt.
+  enabled: true
+
+- id: GT-008
+  check: C-02
+  stage: 5
+  location: tools.py
+  description: The calculate tool eval()s the expression the model chose.
+  enabled: true
+
+- id: GT-009
+  check: C-03
+  stage: 5
+  location: tools.py
+  description: The invoice_report tool builds SQL with an f-string from the model's "status" argument.
+  enabled: true
+
+- id: GT-010
+  check: C-04
+  stage: 5
+  location: main.py
+  description: The /widget endpoint returns the model's reply as unescaped HTML.
+  enabled: true
+
+- id: GT-011
+  check: C-05
+  stage: 5
+  location: tools.py
+  description: The fetch_url tool requests any URL the model chooses, with no allow-list (SSRF).
+  enabled: true
+
+- id: GT-012
+  check: C-06
+  stage: 5
+  location: tools.py
+  description: get_invoice returns any invoice by ID without checking it belongs to the user.
+  enabled: true
+
+- id: GT-013
+  check: P-03
+  stage: 5
+  location: prompts/handoff.jinja
+  description: The hand-off template inserts the customer's message with no delimiters.
+  enabled: true
+
+- id: GT-014
+  check: T-09
+  stage: 6
+  location: tools.json
+  description: >-
+    run_shell runs any shell command, fetch_url requests any URL, and send_email sends
+    to any recipient.
+  enabled: true
+
+- id: GT-015
+  check: T-10
+  stage: 6
+  location: tools.json
+  description: >-
+    Lethal trifecta: read_inbox brings in untrusted email, get_invoice and read_inbox
+    read private data, and fetch_url and send_email can send it anywhere.
+  enabled: true
+
+- id: GT-016
+  check: T-11
+  stage: 6
+  location: mcp_tools.json
+  description: >-
+    The MCP server's currency_convert description hides instructions to collect the
+    customer's invoices and keep it from the user.
+  enabled: true
+
+- id: GT-017
+  check: T-12
+  stage: 6
+  location: mcp_tools.json
+  description: currency_convert's description changed after it was approved (a rug pull).
+  enabled: true
+
+- id: GT-018
+  check: T-13
+  stage: 6
+  location: mcp_tools.json
+  description: The MCP server's tool imitates send_email with a Cyrillic letter.
+  enabled: true
+
+- id: GT-019
+  check: T-18
+  stage: 6
+  location: sandbox/docker-compose.yaml
+  description: >-
+    The code sandbox has network access, mounts the host's root filesystem, and gets
+    the billing API key in its environment.
+  enabled: true
+
+- id: GT-020
+  check: T-01
+  stage: 6
+  location: agent.yaml
+  description: delete_account runs without the customer's confirmation.
+  enabled: true
+
+- id: GT-021
+  check: T-08
+  stage: 6
+  location: agent.yaml
+  description: The agent loop has no step limit (max_steps is null).
+  enabled: true
+
+- id: GT-022
+  check: A-02
+  stage: 7
+  location: openapi.json
+  description: POST /v1/complete reaches the model with no authentication.
+  enabled: true
+
+- id: GT-023
+  check: A-03
+  stage: 7
+  location: agent.yaml
+  description: max_tokens is null and there is no rate limit.
+  enabled: true
+
+- id: GT-024
+  check: A-04
+  stage: 7
+  location: agent.yaml
+  description: The LLM gateway is reached over plain HTTP.
+  enabled: true
+
+- id: GT-025
+  check: A-05
+  stage: 7
+  location: main.py
+  description: Unhandled errors return the full stack trace to the caller.
+  enabled: true
+
+- id: GT-026
+  check: A-07
+  stage: 7
+  location: agent.yaml
+  description: The model is "latest" instead of a pinned version.
+  enabled: true
+
+- id: GT-027
+  check: A-08
+  stage: 7
+  location: tools.py
+  description: search_notes searches every customer's notes, with no tenant filter.
+  enabled: true
+
+- id: GT-028
+  check: A-09
+  stage: 7
+  location: agent.yaml
+  description: The audit log of tool calls is turned off.
+  enabled: true
+
+- id: GT-029
+  check: A-10
+  stage: 7
+  location: "attestation:"
+  description: >-
+    Attested provider settings: a year of retention, training on data, unscoped keys,
+    no rotation, and no spend limit.
+  enabled: true
+
+- id: GT-030
+  check: T-15
+  stage: 7
+  location: agent.yaml
+  description: The billing API credential is admin-scoped and never expires.
+  enabled: true
+
+- id: GT-031
+  check: G-01
+  stage: 7
+  location: agent.yaml
+  description: The injection filter checks user input only, not tool results or output.
+  enabled: true
+
+- id: GT-032
+  check: G-02
+  stage: 7
+  location: agent.yaml
+  description: The injection filter is in monitor mode, so it logs attacks but never blocks.
+  enabled: true
+
+- id: GT-033
+  check: SC-01
+  stage: 7
+  location: models/intent_classifier.pkl
+  description: The intent classifier is a pickle that imports os.system.
+  enabled: true
+
+- id: GT-034
+  check: SC-02
+  stage: 7
+  location: requirements.txt
+  description: langchain 0.0.150 has dozens of known vulnerabilities, including code execution.
+  enabled: true
+
+- id: GT-035
+  check: SC-03
+  stage: 7
+  location: mcp.json
+  description: The uploads MCP server is an unpinned npx package installed with -y.
+  enabled: true
+
+- id: GT-036
+  check: O-03
+  stage: 8
+  location: logs
+  description: >-
+    Asked for its instructions, the model repeats the whole system prompt, with
+    the key and the example customer's contact details in it.
+  enabled: true
+
+- id: GT-037
+  check: O-01
+  stage: 8
+  location: logs
+  description: >-
+    Replies contain an email address and phone number the user never gave: the
+    example customer's details, copied from the system prompt.
+  enabled: true
+
+- id: GT-038
+  check: A-06
+  stage: 8
+  location: logs
+  description: The trace logs store personal data unredacted, in every run's system prompt.
+  enabled: true
+
+- id: GT-039
+  check: P-07
+  stage: 8
+  location: logs
+  description: >-
+    A logged attempt to extract the system prompt that succeeded (an incident,
+    linked to GT-036).
+  enabled: true
+
+- id: GT-040
+  check: T-02
+  stage: 8
+  location: logs
+  description: >-
+    A logged SQL injection in invoice_report's status argument that the tool
+    accepted, returning other customers' invoices (linked to GT-009).
+  enabled: true
+
+- id: GT-041
+  check: P-08
+  stage: 8
+  location: knowledge_base/returns.html
+  description: >-
+    The returns page in the knowledge base hides instructions to the model in
+    white text.
+  enabled: true
+
+- id: GT-042
+  check: T-03
+  stage: 8
+  location: logs
+  description: >-
+    Logged runs where the model obeyed instructions in content it read: the
+    returns page's white text (GT-041), a hidden paragraph on an outside web
+    page, and an email in the support inbox.
+  enabled: true
+
+- id: GT-043
+  check: T-05
+  stage: 8
+  location: logs
+  description: >-
+    The inbox email got the agent to call delete_account, with a value from the
+    email in its arguments.
+  enabled: true
+
+- id: GT-044
+  check: T-01
+  stage: 8
+  location: logs
+  description: >-
+    delete_account ran in a logged run without the customer's approval (linked
+    to GT-020).
+  enabled: true
+
+- id: GT-045
+  check: T-16
+  stage: 8
+  location: logs
+  description: >-
+    The inbox email got the agent to save the attacker's instruction to
+    memory with save_memory.
+  enabled: true
+
+- id: GT-046
+  check: T-07
+  stage: 8
+  location: logs
+  description: >-
+    The outside web page got the agent to look up an invoice and email it to
+    an outside address.
+  enabled: true
+
+- id: GT-047
+  check: O-05
+  stage: 8
+  location: logs
+  description: >-
+    A reply embeds an image whose URL carries the invoice ID to the outside
+    site.
+  enabled: true
+
+- id: GT-048
+  check: O-04
+  stage: 8
+  location: logs
+  description: >-
+    A reply carries HTML with an event handler, and the widget inserts replies
+    unescaped (linked to GT-010).
+  enabled: true

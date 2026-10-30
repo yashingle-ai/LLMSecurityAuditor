@@ -1,0 +1,44 @@
+rules:
+  - id: llmaudit-c03-llm-output-to-sql
+    metadata: {check: C-03}
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Model output is built into a SQL query. Pass values as query parameters instead,
+      and never run SQL the model wrote without a strict allow-list.
+    mode: taint
+    pattern-sources:
+      - pattern: $CLIENT.chat.completions.create(...)
+      - pattern: $CLIENT.completions.create(...)
+      - pattern: $CLIENT.responses.create(...)
+      - pattern: $CLIENT.messages.create(...)
+      - pattern: $MODEL.generate_content(...)
+      - patterns:
+          - pattern-either:
+              - pattern: $OBJ.$METHOD(...)
+              - pattern: $METHOD(...)
+          - metavariable-regex:
+              metavariable: $METHOD
+              regex: ^(a?invoke|a?complete|a?generate|predict|run_agent|ask_llm|call_llm|chat_completion)$
+      # The arguments a model chose for a tool call are model output too.
+      - pattern: $CALL.function.arguments
+      - patterns:
+          - pattern-inside: |
+              def $HANDLER(..., $ARGS, ...):
+                ...
+          - metavariable-regex:
+              metavariable: $ARGS
+              regex: ^(arguments|tool_args|tool_input|tool_arguments)$
+          - pattern: $ARGS
+    pattern-sinks:
+      - patterns:
+          - pattern-either:
+              - pattern: $DB.execute($QUERY, ...)
+              - pattern: $DB.executemany($QUERY, ...)
+              - pattern: $DB.executescript($QUERY, ...)
+              - pattern: $DB.exec_driver_sql($QUERY, ...)
+              - pattern: $DB.raw($QUERY, ...)
+              - pattern: sqlalchemy.text($QUERY, ...)
+          # An imported function named execute (say, a tool dispatcher) isn't a cursor.
+          - pattern-not: execute(...)
+          - focus-metavariable: $QUERY

@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "files": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem@2025.8.21",
+        "/srv/data"
+      ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch==2025.4.7"
+      ]
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/github/github-mcp-server@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      ]
+    }
+  }
+}

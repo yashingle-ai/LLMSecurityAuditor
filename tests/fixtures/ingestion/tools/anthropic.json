@@ -1,0 +1,1 @@
+{"tools": [{"name": "send_email", "description": "Send an email.", "input_schema": {"type": "object", "properties": {"to": {"type": "string"}, "body": {"type": "string"}}, "required": ["to", "body"]}}]}

@@ -1,0 +1,30 @@
+[
+  {
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-filesystem",
+      "/Users/me/docs"
+    ],
+    "command": "npx",
+    "env": {
+      "LOG_LEVEL": "info"
+    },
+    "headers": {},
+    "name": "filesystem",
+    "source": "mcp/claude_desktop.json",
+    "transport": "stdio",
+    "url": null
+  },
+  {
+    "args": [],
+    "command": null,
+    "env": {},
+    "headers": {
+      "Authorization": "Bearer test-token-0123456789abcdef"
+    },
+    "name": "remote-search",
+    "source": "mcp/claude_desktop.json",
+    "transport": "sse",
+    "url": "https://mcp.example.com/sse"
+  }
+]

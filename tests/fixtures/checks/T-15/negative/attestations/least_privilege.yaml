@@ -1,0 +1,2 @@
+agent_credentials_least_privilege: true
+agent_credential_max_age_days: 7

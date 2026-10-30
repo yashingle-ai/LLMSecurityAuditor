@@ -1,0 +1,13 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "brand_new",
+      "description": "Not reviewed yet.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+]

@@ -1,0 +1,42 @@
+rules:
+  - id: llmaudit-c02-llm-output-to-code-execution
+    metadata: {check: C-02}
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Model output reaches code or shell execution. Anyone who can influence the model,
+      including through content it reads, can run code here.
+    mode: taint
+    pattern-sources:
+      - pattern: $CLIENT.chat.completions.create(...)
+      - pattern: $CLIENT.completions.create(...)
+      - pattern: $CLIENT.responses.create(...)
+      - pattern: $CLIENT.messages.create(...)
+      - pattern: $MODEL.generate_content(...)
+      - patterns:
+          - pattern-either:
+              - pattern: $OBJ.$METHOD(...)
+              - pattern: $METHOD(...)
+          - metavariable-regex:
+              metavariable: $METHOD
+              regex: ^(a?invoke|a?complete|a?generate|predict|run_agent|ask_llm|call_llm|chat_completion)$
+      # The arguments a model chose for a tool call are model output too.
+      - pattern: $CALL.function.arguments
+      - patterns:
+          - pattern-inside: |
+              def $HANDLER(..., $ARGS, ...):
+                ...
+          - metavariable-regex:
+              metavariable: $ARGS
+              regex: ^(arguments|tool_args|tool_input|tool_arguments)$
+          - pattern: $ARGS
+    pattern-sinks:
+      - pattern: eval(...)
+      - pattern: exec(...)
+      - pattern: compile(...)
+      - pattern: os.system(...)
+      - pattern: os.popen(...)
+      - pattern: pickle.loads(...)
+      - patterns:
+          - pattern: subprocess.$FUNC($COMMAND, ...)
+          - focus-metavariable: $COMMAND

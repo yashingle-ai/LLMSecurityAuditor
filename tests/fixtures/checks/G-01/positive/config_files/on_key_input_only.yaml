@@ -1,0 +1,6 @@
+llm:
+  model: acme-chat-2026-09-15
+guardrails:
+  injection_filter:
+    on: [input]  # YAML 1.1 reads a bare `on` as true
+    mode: block

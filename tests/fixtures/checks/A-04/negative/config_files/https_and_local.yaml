@@ -1,0 +1,7 @@
+llm:
+  base_url: https://llm-gateway.example.com/v1
+  model: acme-chat-2026-09-15
+embeddings:
+  base_url: http://localhost:11434/v1  # Ollama on the same machine
+  model: nomic-embed-text
+schema: http://json-schema.org/draft-07/schema#

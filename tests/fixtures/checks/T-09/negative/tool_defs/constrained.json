@@ -1,0 +1,20 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "fetch_status",
+      "description": "Fetch a status page.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "enum": [
+              "https://status.example.com/"
+            ]
+          }
+        }
+      }
+    }
+  }
+]

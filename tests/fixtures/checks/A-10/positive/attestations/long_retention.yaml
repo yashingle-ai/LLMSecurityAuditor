@@ -1,0 +1,5 @@
+provider_retention_days: 365
+provider_trains_on_data: false
+api_keys_scoped: true
+api_key_rotation_days: 30
+spend_limit: true

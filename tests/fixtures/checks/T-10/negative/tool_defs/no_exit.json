@@ -1,0 +1,28 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_invoice",
+      "description": "Look up an invoice.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "read_inbox",
+      "description": "Read the support inbox.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+]

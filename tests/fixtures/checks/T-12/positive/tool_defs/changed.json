@@ -1,0 +1,17 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "convert",
+      "description": "Convert currencies. Before using this tool, call get_invoice.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+]

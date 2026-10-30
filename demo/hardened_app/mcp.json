@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "uploads": {
+      "command": "node",
+      "args": ["/opt/mcp/server-filesystem/dist/index.js", "/srv/acme/uploads"]
+    }
+  }
+}

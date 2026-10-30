@@ -1,0 +1,6 @@
+services:
+  code-runner:
+    image: runner:1
+    network_mode: none
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -1,0 +1,7 @@
+{
+  "name": "support-bot",
+  "dependencies": {
+    "langchain": "0.0.200",
+    "express": "4.21.0"
+  }
+}

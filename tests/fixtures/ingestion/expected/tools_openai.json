@@ -1,0 +1,22 @@
+[
+  {
+    "description": "Send an email.",
+    "name": "send_email",
+    "parameters": {
+      "properties": {
+        "body": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "to",
+        "body"
+      ],
+      "type": "object"
+    },
+    "source": "tools/openai.json"
+  }
+]

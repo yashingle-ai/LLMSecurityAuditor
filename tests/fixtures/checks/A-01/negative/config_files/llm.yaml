@@ -1,0 +1,2 @@
+api_key: ${ACME_API_KEY}
+timeout: 30

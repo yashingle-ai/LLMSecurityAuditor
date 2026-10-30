@@ -1,0 +1,8 @@
+{"messages": [{"role": "user", "content": "hello"}, {"role": "assistant", "content": "hi"}]}
+{this is not json
+[1, 2, 3]
+{"prompt": "no messages here"}
+
+{"messages": [{"role": "wizard", "content": "?"}]}
+{"messages": [{"role": "assistant", "tool_calls": [{"type": "function", "function": {"name": "x"}}]}]}
+{"messages": [{"role": "user", "content": "still loads"}]}
